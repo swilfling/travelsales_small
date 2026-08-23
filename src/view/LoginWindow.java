@@ -27,29 +27,22 @@ public class LoginWindow extends UACWindow {
 	
 	protected JButton createLoginButton(JTextField text_uname, JTextField text_pwd, JLabel label_invalid)
 	{
-		JButton btn_login = new JButton("Login");
-		btn_login.addActionListener(new ActionListener()
+		JButton btn = new JButton("Login");
+		btn.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
-				try
-				{
-					ctrl.checkLogin(text_uname.getText(), text_pwd.getText());
-				}
-				catch(Exception e)
-				{
-					label_invalid.setVisible(true);
-				}
+				ctrl.doLogin(text_uname.getText(), text_pwd.getText());
 			}
 		});
-		return btn_login;
+		return btn;
 	}
 	
 	protected JButton createRegisterButton()
 	{
-		JButton btn_register = new JButton("Register");
-		btn_register.addActionListener(new ActionListener()
+		JButton btn = new JButton("Register");
+		btn.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent event)
@@ -57,26 +50,24 @@ public class LoginWindow extends UACWindow {
 				ctrl.openRegisterWindow();
 			}
 		});
-		return btn_register;
+		return btn;
 	}
 	
 	@Override
 	protected void create_content()
 	{
 		super.create_content();
-		JLabel label_invalid = new JLabel();
-		label_invalid.setText("Invalid username/password.");
-		label_invalid.setVisible(false);
 		Container content = frame.getContentPane();
 		JTextField text_uname = (JTextField)content.getComponent(1);
 		JTextField text_pwd = (JTextField)content.getComponent(3);
+		JLabel label_invalid = (JLabel)content.getComponent(4);
+		label_invalid.setText("Invalid username/password.");
 		
 		JButton loginButton = createLoginButton(text_uname, text_pwd, label_invalid);
 		JButton registerButton = createRegisterButton();
 		
 		content.add(loginButton);
 		content.add(registerButton);
-		content.add(label_invalid);
 		
 		
 	}
@@ -84,6 +75,7 @@ public class LoginWindow extends UACWindow {
 		// TODO Auto-generated method stub
 		frame.setEnabled(true);
 	}
+
 	
 }
 

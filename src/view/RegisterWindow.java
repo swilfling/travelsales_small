@@ -27,26 +27,16 @@ public class RegisterWindow extends UACWindow {
 	
 	protected JButton createRegisterButton(JTextField text_uname, JTextField text_pwd, JLabel label_invalid)
 	{
-		JButton btn_login = new JButton("Register");
-		btn_login.addActionListener(new ActionListener()
+		JButton btn = new JButton("Register");
+		btn.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent event)
 			{
-				try
-				{
-					ctrl.createUser(text_uname.getText(), text_pwd.getText());
-					//frame.setVisible(false);
-					ctrl.reenableLoginWindow();
-					
-				}
-				catch(Exception e)
-				{
-					label_invalid.setVisible(true);
-				}
+				ctrl.checkRegister(text_uname.getText(), text_pwd.getText());
 			}
 		});
-		return btn_login;
+		return btn;
 	}
 	
 	protected JButton createCancelButton()
@@ -67,22 +57,20 @@ public class RegisterWindow extends UACWindow {
 	protected void create_content()
 	{
 		super.create_content();
-		JLabel label_invalid = new JLabel();
-		label_invalid.setText("Username already taken.");
-		label_invalid.setVisible(false);
 		Container content = frame.getContentPane();
 		JTextField text_uname = (JTextField)content.getComponent(1);
 		JTextField text_pwd = (JTextField)content.getComponent(3);
-		
+		JLabel label_invalid = (JLabel)content.getComponent(4);
+		label_invalid.setText("User name already taken.");
 		JButton loginButton = createRegisterButton(text_uname, text_pwd, label_invalid);
 		JButton registerButton = createCancelButton();
 		
 		content.add(loginButton);
 		content.add(registerButton);
-		content.add(label_invalid);
 		
 		
 	}
 	
+
 }
 

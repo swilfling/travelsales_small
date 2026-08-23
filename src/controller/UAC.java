@@ -4,6 +4,9 @@ import model.User;
 import model.UserData;
 import view.LoginWindow;
 import view.RegisterWindow;
+
+import javax.swing.JTextField;
+
 import controller.Controller;
 
 public class UAC {
@@ -66,4 +69,30 @@ public class UAC {
 		if(login_view != null)
 			login_view.enableLoginWindow();
 	}
+
+	public void checkRegister(String text_uname, String text_pwd)
+	{
+		try
+		{
+			createUser(text_uname, text_pwd);
+			reenableLoginWindow();
+			
+		}
+		catch(Exception e)
+		{
+			register_view.updateInvalidLabel();
+		}
+		
+	}
+	public void doLogin(String text_uname, String text_pwd) {
+		try
+		{
+			checkLogin(text_uname, text_pwd);
+		}
+		catch(Exception e)
+		{
+			login_view.updateInvalidLabel();
+		}
+	}
 }
+

@@ -48,13 +48,14 @@ public class UACWindow {
 		Container content = frame.getContentPane();
 		content.setBackground(Color.white);
 		content.setLayout(new FlowLayout());
-		//System.out.println("Created frame");
 	}
 	
 	protected void create_content()
 	{
 		JLabel label_uname = new JLabel();
 		JLabel label_pwd = new JLabel();
+		JLabel label_invalid = new JLabel();
+		label_invalid.setVisible(false);
 		initializeLabels(label_uname, label_pwd);
 		JTextField text_uname = new JTextField("Default name");
 		JTextField text_pwd = new JTextField("Default pwd");
@@ -63,8 +64,15 @@ public class UACWindow {
 		content.add(text_uname);
 		content.add(label_pwd);
 		content.add(text_pwd);
-		
+		content.add(label_invalid);
 	}
+	
+	public void updateInvalidLabel()
+	{
+		JLabel label_invalid = (JLabel)frame.getContentPane().getComponent(4);
+		label_invalid.setVisible(true);
+	}
+	
 	protected void initializeLabels(JLabel label_uname, JLabel label_pwd)
 	{	
 		label_uname.setText("User name:");
@@ -77,5 +85,7 @@ public class UACWindow {
 	{
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
+	
+	
 }
 
