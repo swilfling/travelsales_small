@@ -19,10 +19,14 @@ public class UAC {
 	{
 		this.udata = udata;
 		this.ctrl = ctrl;
+		this.udata.addUser("admin", "adminoad");
+	}
+	
+	public void initialize_view()
+	{
 		this.login_view = new LoginWindow(this);
 		login_view.initialize_window();
 	}
-	
 	/**
 	 * Create user
 	 * @param uname: name of user
@@ -47,7 +51,7 @@ public class UAC {
 		if (user != null)
 		{
 			login_view.closeWindow();
-			ctrl.loginUser(user);
+			this.ctrl.startGame(user);
 		}
 		else
 			throw new Exception("Login invalid.");

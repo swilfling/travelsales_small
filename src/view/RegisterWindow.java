@@ -54,9 +54,9 @@ public class RegisterWindow extends UACWindow {
 	}
 	
 	@Override
-	protected void create_content()
+	protected void createContent()
 	{
-		super.create_content();
+		super.createContent();
 		Container content = frame.getContentPane();
 		JTextField text_uname = (JTextField)content.getComponent(1);
 		JTextField text_pwd = (JTextField)content.getComponent(3);

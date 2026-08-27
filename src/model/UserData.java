@@ -9,7 +9,6 @@ public class UserData {
 	public UserData()
 	{
 		udata = new ArrayList<User>();
-		this.addUser("admin", "adminoad");
 	}
 	
 	/** Add user to user data structure
