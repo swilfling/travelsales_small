@@ -45,5 +45,15 @@ public class Connection {
 		return point1.distance(point2);
 	}
 	
+	public boolean isEqual(GamePoint p1, GamePoint p2)
+	{
+		int id1 = getPoint1().getPoint_id();
+		int id2 = getPoint2().getPoint_id();
+		if ((id1 == p1.getPoint_id() && id2 == p2.getPoint_id()) || (id1 == p2.getPoint_id() && id2 == p1.getPoint_id()))
+		{
+			return true;
+		}
+		return false;
+	}
 	
 }

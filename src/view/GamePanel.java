@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import controller.GameCtrl;
 import model.Connection;
 import model.GamePoint;
+import model.Path;
 
 public class GamePanel extends JPanel {
 	protected GameCtrl ctrl;
@@ -38,29 +39,46 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		ArrayList<GamePoint> points = ctrl.getPoints();
-		ArrayList<Connection> connections = ctrl.getConnections();
-		drawConnections(connections, g);
-		drawPoints(points, g);
+		ArrayList<GamePoint> points = ctrl.getGameData().getDataPoints();
+		ArrayList<Connection> connections = ctrl.getGameData().getConnections();
+		Path path = ctrl.getGameData().getPath();
+		drawConnections(connections, path, g);
+		drawPoints(points, path,  g);
 		
 	}
 	
-	protected void drawPoints(ArrayList<GamePoint> points, Graphics g)
+	protected void drawPoints(ArrayList<GamePoint> points, Path path, Graphics g)
 	{
 		for (GamePoint point : points)
 		{
-			if(point.isActive())
-				g.setColor(Color.red);
-			else
-				g.setColor(Color.BLACK);
+			g.setColor(Color.BLACK);
+			if(path.getStartPoint() != null)
+				if(point.getPoint_id() == path.getStartPoint().getPoint_id())
+					g.setColor(Color.red);
+				else if(path.getNumElements() > 0)
+				{	
+					if (point.getPoint_id() == path.getEndPoint().getPoint_id())
+						g.setColor(Color.blue);
+					else if (path.in_path(point))
+						g.setColor(Color.green);
+				}
+				
 			drawCircle(g, (int)point.getX(), (int)point.getY(), GamePoint.point_radius);
 		}
 	}
 	
-	protected void drawConnections(ArrayList<Connection> connections, Graphics g)
+	protected void drawConnections(ArrayList<Connection> connections, Path path, Graphics g)
 	{
 		for (Connection c : connections)
 		{
+			if (path.in_path(c.getPoint1(), c.getPoint2()))
+			{
+				g.setColor(Color.red);
+			}
+			else
+			{
+				g.setColor(Color.black);
+			}
 			drawLine(g, c.getPoint1(), c.getPoint2());
 		}
 	}

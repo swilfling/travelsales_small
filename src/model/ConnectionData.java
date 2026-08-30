@@ -31,4 +31,29 @@ public class ConnectionData {
 	{
 		return connectionData;
 	}
+	
+	public boolean isValid(GamePoint p1, GamePoint p2)
+	{
+		for (Connection c : connectionData)
+		{
+			int id1 = c.getPoint1().getPoint_id();
+			int id2 = c.getPoint2().getPoint_id();
+			if ((id1 == p1.getPoint_id() && id2 == p2.getPoint_id()) || (id1 == p2.getPoint_id() && id2 == p1.getPoint_id()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	public Connection getConnection(GamePoint p1, GamePoint p2)
+	{
+		for (Connection c : connectionData)
+		{
+			if (c.isEqual(p1, p2))
+			{
+				return c;
+			}
+		}
+		return null;
+	}
 }
