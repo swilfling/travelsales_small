@@ -3,7 +3,10 @@ package controller;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import controller.State.*;
+import controller.State.GameState;
+import controller.State.StateConnect;
+import controller.State.StateDone;
+import controller.State.StateIdle;
 import model.Connection;
 import model.ConnectionData;
 import model.GameData;

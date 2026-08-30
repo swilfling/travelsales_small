@@ -3,6 +3,7 @@ package controller.State;
 import java.awt.Point;
 
 import model.GameData;
+import model.GamePoint;
 import view.GameWindow;
 
 public abstract class GameState {
