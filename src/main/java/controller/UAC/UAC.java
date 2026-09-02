@@ -71,7 +71,8 @@ public class UAC {
 		try
 		{
 			UserFactory f = new UserFactory();
-			f.createUser(text_uname, text_pwd);
+			User u = f.createUser(text_uname, text_pwd);
+			u.saveToDB();
 			reenableLoginWindow();
 			
 		}
