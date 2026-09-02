@@ -1,16 +1,19 @@
-package src.model.Support;
+package model.Support;
 
 import java.nio.file.Path;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
+//import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.service.ServiceRegistry;
 
-import src.model.Connection;
-import src.model.ConnectionData;
-import src.model.GameData;
-import src.model.GamePoint;
-import src.model.PointData;
-import src.model.UAC.User;
+import model.Connection;
+import model.ConnectionData;
+import model.GameData;
+import model.GamePoint;
+import model.PointData;
+import model.UAC.User;
 
 
 /**
@@ -38,7 +41,10 @@ public class DatabaseConstruction {
 		configuration.addAnnotatedClass(User.class);
 		configuration.configure("hibernate.cfg.xml");
 
-		new SchemaExport(configuration).create(true, true);
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+		SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+		sessionFactory.getSchemaManager().exportMappedObjects(true);
+		//new SchemaExport(configuration).create(true, true);
 
 		System.out.println("Finished");
 	}

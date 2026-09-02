@@ -1,13 +1,30 @@
 package model.UAC;
 
-public class User {
-	private String name;
-	private String pwd;
-	private int id;
+import model.Support.HibernateSupport;
+import model.Support.ISaveAndDelete;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="user")
+@NamedQueries({ @NamedQuery(name = "HQL_GET_USER_BY_NAME", 
+query = "from User where name = :name") })
+public class User implements ISaveAndDelete{
 	
-	public User(int id, String name, String pwd)
+	@Column
+	protected String name;
+	@Column
+	protected String pwd;
+	@Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+	//@Column(columnDefinition = "integer auto_increment")
+	protected int id;
+	
+	public User()
 	{
-		this.setId(id);
+		
+	}
+	public User(String name, String pwd)
+	{
 		this.setName(name);
 		this.setPwd(pwd);
 	}
@@ -41,5 +58,16 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	@Override
+	public boolean saveToDB() {
+		if(!HibernateSupport.commit(this))
+			return false;
+		return true;
+	}
+
+	@Override
+	public void deleteFromDB() {
+		HibernateSupport.deleteObject(this);
 	}
 }

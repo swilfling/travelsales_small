@@ -33,7 +33,7 @@ public class Controller implements Runnable {
 			uctrl.initialize_view();
 		}
 		else
-			startGame(new User(0, "Test", "test"));
+			startGame(new User("Test", "test"));
 	}
 	public static void main(String[] args) {
 		System.out.println("Test main");

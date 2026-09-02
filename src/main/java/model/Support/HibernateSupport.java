@@ -1,18 +1,28 @@
-package src.model.Support;
+package model.Support;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
+
+//import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.sql.ast.tree.predicate.Predicate;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import model.Connection;
+import model.GameData;
+import model.GamePoint;
+import model.UAC.User;
+
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 /**
  * This Class handles everything for communicating with the database
@@ -35,23 +45,29 @@ public class HibernateSupport {
 	}
 	
 	private static void init() {
-		File configFile = new File("C:/xampp/tomcat/webapps/OAD_WS14/WEB-INF/classes/hibernate.cfg.xml");
+		File configFile = new File("hibernate.cfg.xml");
 
 		Configuration configuration = new Configuration();
 		
 		//add all classes you want to annotate
-		configuration.addAnnotatedClass(src.model.GamePoint.class);
-		
+		configuration.addAnnotatedClass(GamePoint.class);
+		configuration.addAnnotatedClass(Connection.class);
+		configuration.addAnnotatedClass(Path.class);
+		configuration.addAnnotatedClass(User.class);
 		configuration.configure(configFile);
 		
-		ServiceRegistry serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 	}
 	
-	private static Session getCurrentSession() {
+	protected static Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
 	
+	public static CriteriaBuilder getCriteriaBuilder()
+	{
+		return getCurrentSession().getCriteriaBuilder();
+	}
 	
 	public static void beginTransaction() {
 		getCurrentSession().beginTransaction();
@@ -63,35 +79,45 @@ public class HibernateSupport {
 	
 	public static boolean commit(Object obj) {
 		try {
-			getCurrentSession().saveOrUpdate(obj);
+			getCurrentSession().persist(obj);
 		}
 		catch (HibernateException e) {
+		e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> List<T> readMoreObjects(Class<?> classToRetrieve, List<Criterion> criterions) {
+	/*@SuppressWarnings("unchecked")
+	public static <T> List<T> readMoreObjects(Class<?> classToRetrieve, List<Predicate> criterions) {
 		beginTransaction();
-		Criteria criteria = getCurrentSession().createCriteria(classToRetrieve);
-		for(Criterion criterion: criterions) {
-			criteria.add(criterion);
-		}
-		List<T> result = criteria.list();
+		//b.createQuery(classToRetrieve);
+		//Criteria criteria = getCurrentSession().createCriteria(classToRetrieve);
+		//for(Criterion criterion: criterions) {
+		//	criteria.add(criterion);
+		//}
+		//List<T> result = criteria.list();
 		commitTransaction();
-		return result;
-	}
+		//return result;
+		return null;
+	}*/
 	
-	public static <T> T readOneObject(Class<?> classToRetrieve, List<Criterion> criterions) {
+	/*public static <T> T readOneObject(Class<?> classToRetrieve, List<Criterion> criterions) {
 		List<T> result = readMoreObjects(classToRetrieve, criterions);
 		return (result.size() > 0) ? (result.get(0)):(null);
+	}*/
+	public static <T> List<T> execute_query(String name, String parameter_name, String parameter_value)
+	{
+		var query = getCurrentSession().getNamedQuery(name);
+		query.setParameter(parameter_name, parameter_value);
+		return (List <T>)query.list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
 	public static <T> T readOneObjectByID(Class<?> classToRetrieve, int id) {
-		List<Criterion> criterions = new ArrayList<Criterion>();
-		criterions.add(Restrictions.idEq(id));
-		T result = readOneObject(classToRetrieve, criterions);
+		T result = (T)getCurrentSession().getReference(classToRetrieve, id);
+
 		return result;
 	}
 	
@@ -99,4 +125,8 @@ public class HibernateSupport {
 		getCurrentSession().delete(objectToDelete);
 	}
 	
+	public SessionFactory getSessionFactory()
+	{
+		return sessionFactory;
+	}
 }

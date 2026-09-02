@@ -27,7 +27,7 @@ public class UserData {
 	public void addUser(String uname, String pwd)
 	{
 		int uid = udata.size();
-		User u = new User(uid, uname, pwd);
+		User u = new User(uname, pwd);
 		udata.add(u);
 		System.out.printf("Adding user %s\n" , u.getName());
 	}
