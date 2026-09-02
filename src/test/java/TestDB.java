@@ -22,7 +22,7 @@ public class TestDB {
 		User userA = null;
 		User userB = null;
 		try {
-			userA = f.createUser("Hello", "World");
+			userA = f.createUser("Hello1", "World");
 			if (!userA.saveToDB())
 				System.out.println("Error saving userA");
 		}
@@ -42,8 +42,12 @@ public class TestDB {
 		HibernateSupport.beginTransaction();
 		List<User> users = HibernateSupport.execute_query("HQL_GET_USER_BY_NAME","username", "Test");
 		HibernateSupport.commitTransaction();
-		User user = users.getFirst();
-		System.out.printf("Query user: %s %s\n", user.getName(), user.getPwd());
+		if (!users.isEmpty())
+		{
+			User user = users.getFirst();
+			System.out.printf("Query user: %s %s\n", user.getName(), user.getPwd());
+		}
+		
 
 		
 		/*
@@ -57,13 +61,16 @@ public class TestDB {
 
 		HibernateSupport.commitTransaction();
 		*/
-		HibernateSupport.beginTransaction();
-		User readUser = HibernateSupport.readOneObjectByID(User.class, 1);
+		/*HibernateSupport.beginTransaction();
+		User readUser = HibernateSupport.readOneObjectByID(User.class, 0);
 		System.out.printf("%s %s", readUser.getName(), readUser.getPwd());
 		HibernateSupport.commitTransaction();
 		//if(readUser != null){
 		//	System.out.println("User read from DB: " + readUser.getUsername() + " pw: " + readUser.getPassword());
 		//}
+		*/
+		
+		//Legacy
 		
 		//Comment comment = new Comment(readUser, "Hallo, dass ist mein erstes Kommentar");
 		

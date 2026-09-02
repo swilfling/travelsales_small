@@ -80,7 +80,7 @@ public class HibernateSupport {
 	
 	public static boolean commit(Object obj) {
 		try {
-			getEntityManager().persist(obj);
+			sessionFactory.getCurrentSession().persist(obj);
 		}
 		catch (HibernateException e) {
 		e.printStackTrace();

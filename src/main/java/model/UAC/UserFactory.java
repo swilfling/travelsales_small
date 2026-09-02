@@ -8,7 +8,7 @@ public class UserFactory {
 	public User createUser(String uname, String pwd) throws Exception
 	{
 		if(User.in_db(uname))
-			throw new Exception("User name already taken.");
+			throw new Exception(String.format("User name %s already taken.", uname));
 		User u = new User();
 		u.setName(uname);
 		u.setPwd(pwd);
