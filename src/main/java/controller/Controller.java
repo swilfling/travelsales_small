@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import controller.UAC.UAC;
 import model.UAC.User;
-import view.UAC.LoginWindow;
 
 public class Controller implements Runnable {
 	private static Controller _instance = null;
