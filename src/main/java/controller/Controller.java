@@ -31,16 +31,22 @@ public class Controller implements Runnable {
 			uctrl.initialize_view();
 		}
 		else
-			startGame(new User("Test", "test"));
+		{
+			startGame();
+		}
 	}
 	public static void main(String[] args) {
 		System.out.println("Test main");
 		EventQueue.invokeLater(new Controller());
 	}
 	
-	public void startGame(User user)
+	public void startGameForUser(User user)
 	{
-		System.out.printf("Logging in user %s", user.getName());
+		startGame();
+	}
+	
+	public void startGame()
+	{
 		try {
 			GameCtrl game_ctrl = new GameCtrl (Controller.getInstance());
 			game_ctrl.initialize();

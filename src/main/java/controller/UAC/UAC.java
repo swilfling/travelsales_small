@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 
 import controller.Controller;
 import model.UAC.User;
+import model.UAC.UserFactory;
 
 public class UAC {
 	protected Controller ctrl;
@@ -16,7 +17,9 @@ public class UAC {
 	{
 		this.ctrl = ctrl;
 		try {
-			User.addUserToDB("admin", "adminoad");
+			UserFactory f = new UserFactory();
+			User u = f.createUser("admin", "adminoad");
+			u.saveToDB();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -28,33 +31,18 @@ public class UAC {
 		this.login_view = new LoginWindow(this);
 		login_view.initialize_window();
 	}
-	/**
-	 * Create user
-	 * @param uname: name of user
-	 * @param pwd: pwd
-	 * @throws Exception 
-	 */
-	public void createUser(String uname, String pwd) throws Exception
-	{
-		if (!User.in_db(uname))
-		{
-			User.addUserToDB(uname, pwd);
-		}
-		else
-		{
-			throw new Exception("Username exists already.");
-		}
-	}
+
 	
 	public void checkLogin(String uname, String pwd) throws Exception
 	{
-		User user = User.from_db(uname);
+		UserFactory f = new UserFactory();
+		User user = f.from_db(uname);
 		if (user != null)
 		{
 			if (user.getPwd().equals(pwd))
 			{
 				login_view.closeWindow();
-				this.ctrl.startGame(user);
+				this.ctrl.startGameForUser(user);
 				return;
 			}
 		}
@@ -82,7 +70,8 @@ public class UAC {
 	{
 		try
 		{
-			createUser(text_uname, text_pwd);
+			UserFactory f = new UserFactory();
+			f.createUser(text_uname, text_pwd);
 			reenableLoginWindow();
 			
 		}

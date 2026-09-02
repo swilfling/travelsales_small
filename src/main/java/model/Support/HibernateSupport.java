@@ -16,6 +16,7 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.sql.ast.tree.predicate.Predicate;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import model.Connection;
 import model.GameData;
@@ -60,26 +61,26 @@ public class HibernateSupport {
 		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 	}
 	
-	protected static Session getCurrentSession() {
-		return sessionFactory.getCurrentSession();
+	protected static EntityManager getEntityManager() {
+		return sessionFactory.createEntityManager();
 	}
 	
 	public static CriteriaBuilder getCriteriaBuilder()
 	{
-		return getCurrentSession().getCriteriaBuilder();
+		return getEntityManager().getCriteriaBuilder();
 	}
 	
 	public static void beginTransaction() {
-		getCurrentSession().beginTransaction();
+		sessionFactory.getCurrentSession().beginTransaction();
 	}
 	
 	public static void commitTransaction() {
-		getCurrentSession().getTransaction().commit();
+		sessionFactory.getCurrentSession().getTransaction().commit();
 	}
 	
 	public static boolean commit(Object obj) {
 		try {
-			getCurrentSession().persist(obj);
+			getEntityManager().persist(obj);
 		}
 		catch (HibernateException e) {
 		e.printStackTrace();
@@ -108,25 +109,21 @@ public class HibernateSupport {
 	}*/
 	public static <T> List<T> execute_query(String name, String parameter_name, String parameter_value)
 	{
-		var query = getCurrentSession().getNamedQuery(name);
+		EntityManager em = sessionFactory.createEntityManager();
+		var query = em.createNamedQuery(name);
 		query.setParameter(parameter_name, parameter_value);
-		return (List <T>)query.list();
+		return (List <T>)query.getResultList();
 	}
 	
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T readOneObjectByID(Class<?> classToRetrieve, int id) {
-		T result = (T)getCurrentSession().getReference(classToRetrieve, id);
+		T result = (T)getEntityManager().getReference(classToRetrieve, id);
 
 		return result;
 	}
 	
 	public static <T> void deleteObject(T objectToDelete) {
-		getCurrentSession().delete(objectToDelete);
-	}
-	
-	public SessionFactory getSessionFactory()
-	{
-		return sessionFactory;
+		sessionFactory.createEntityManager().remove(objectToDelete);
 	}
 }

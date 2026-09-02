@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.Root;
 //import org.hibernate.criterion.Criterion;
 //import org.hibernate.criterion.Restrictions;
 import model.UAC.User;
+import model.UAC.UserFactory;
 import model.Support.HibernateSupport;
 
 
@@ -17,18 +18,27 @@ public class TestDB {
 	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		System.out.println("Start with test file");
-		
-		User userA = new User("Hello", "World");
-		User userB = new User("Test", "Test");
-		HibernateSupport.beginTransaction();
-		if (!userA.saveToDB())
-			System.out.println("Error saving userA");
-		HibernateSupport.commitTransaction();
-		HibernateSupport.beginTransaction();
+		UserFactory f = new UserFactory();
+		User userA = null;
+		User userB = null;
+		try {
+			userA = f.createUser("Hello", "World");
+			if (!userA.saveToDB())
+				System.out.println("Error saving userA");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		try {
+			userB = f.createUser("Test", "Test");
 		if (!userB.saveToDB())
 			System.out.println("Error saving userB");
-		HibernateSupport.commitTransaction();
-
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		HibernateSupport.beginTransaction();
 		List<User> users = HibernateSupport.execute_query("HQL_GET_USER_BY_NAME","username", "Test");
 		HibernateSupport.commitTransaction();

@@ -23,14 +23,7 @@ public class User implements ISaveAndDelete{
 	protected int id;
 	
 	public User()
-	{
-		
-	}
-	public User(String name, String pwd)
-	{
-		this.setName(name);
-		this.setPwd(pwd);
-	}
+	{}
 
 	/* Getters and setters
 	 * 
@@ -64,10 +57,15 @@ public class User implements ISaveAndDelete{
 	}
 	@Override
 	public boolean saveToDB() {
-		HibernateSupport.beginTransaction();
-		boolean noerr = HibernateSupport.commit(this);
-		HibernateSupport.commitTransaction();
-		return noerr;
+		if (!in_db(name))
+		{
+			HibernateSupport.beginTransaction();
+			boolean noerr = HibernateSupport.commit(this);
+			HibernateSupport.commitTransaction();
+			return true;
+		}
+		else
+			return false;
 	}
 
 	@Override
@@ -75,21 +73,6 @@ public class User implements ISaveAndDelete{
 		HibernateSupport.deleteObject(this);
 	}
 	
-	public static User from_db(String uname)
-	{
-		try {
-			HibernateSupport.beginTransaction();
-			List<User> users = HibernateSupport.execute_query("HQL_GET_USER_BY_NAME","username", uname);
-			HibernateSupport.commitTransaction();
-			if (!users.isEmpty())
-				return users.getFirst();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
 	/**
 	 * Check if user in user data
 	 * @param uname
@@ -97,9 +80,7 @@ public class User implements ISaveAndDelete{
 	 */
 	public static boolean in_db(String uname)
 	{
-		HibernateSupport.beginTransaction();
-		List<User> users = HibernateSupport.execute_query("HQL_GET_USER_BY_NAME","username", uname);
-		HibernateSupport.commitTransaction();
+		List<User> users = select_from_db(uname);
 		if (users != null)
 		{
 			if(!users.isEmpty())
@@ -107,21 +88,11 @@ public class User implements ISaveAndDelete{
 		}
 		return false;
 	}
-	
-	/** Add new user to data structure
-	 * 	 @param uname: user name
-	 *   @param pwd: user password
-	 */
-	public static void addUserToDB(String uname, String pwd) throws Exception
+	protected static List<User> select_from_db(String uname)
 	{
-		System.out.printf("Adding user %s\n" , uname);
-		if(!User.in_db(uname))
-		{
-			User u = new User(uname, pwd);
-			u.saveToDB();
-		}
-		
-		else
-			throw new Exception("User name already taken.");
+		HibernateSupport.beginTransaction();
+		List<User> users = HibernateSupport.execute_query("HQL_GET_USER_BY_NAME","username", uname);
+		HibernateSupport.commitTransaction();
+		return users;
 	}
 }

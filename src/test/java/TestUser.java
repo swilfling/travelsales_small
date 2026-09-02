@@ -1,4 +1,5 @@
 import model.UAC.User;
+import model.UAC.UserFactory;
 
 public class TestUser {
 	public static void main(String[] args) {
@@ -6,8 +7,16 @@ public class TestUser {
 		
 		String uname1 = "Test";
 		String uname2 = "notinhere";
-		User u = new User ("Test","test");
-		u.saveToDB();
+		UserFactory f = new UserFactory();
+		User u = null;
+		try {
+			u = f.createUser("Test","test");
+			u.saveToDB();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		boolean in_db1 =  User.in_db(uname1);
 		boolean in_db2 = User.in_db(uname2);
 		
@@ -17,14 +26,8 @@ public class TestUser {
 		assert(in_db1 == true);
 		assert(in_db2 == false);
 		
-		try 
-		{
-			User.addUserToDB("Test", "test");
-		}
-		catch(Exception e)
-		{
-			System.out.println("User name already taken");
-		}
+		if(u != null)
+			assert(u.saveToDB() == false);
 		
 		
 		
