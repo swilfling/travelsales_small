@@ -30,11 +30,10 @@ public class TestDB {
 		HibernateSupport.commitTransaction();
 
 		HibernateSupport.beginTransaction();
-
-		List<User> users = HibernateSupport.execute_query("HQL_GET_USER_BY_NAME","name", "Hello");
+		List<User> users = HibernateSupport.execute_query("HQL_GET_USER_BY_NAME","username", "Test");
 		HibernateSupport.commitTransaction();
 		User user = users.getFirst();
-		System.out.printf("Query user: %s %s", user.getName(), user.getPwd());
+		System.out.printf("Query user: %s %s\n", user.getName(), user.getPwd());
 
 		
 		/*

@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 
 import controller.UAC.UAC;
 import model.UAC.User;
-import model.UAC.UserData;
 import view.UAC.LoginWindow;
 
 public class Controller implements Runnable {
@@ -21,15 +20,14 @@ public class Controller implements Runnable {
 	}
 	
 	enum state {LOGIN, GAME};
-	boolean debug = true;
+	boolean debug = false;
 	@Override
 	public void run()
 	{
 		System.out.println("Test run");
-		UserData udata = new UserData(); // todo replace by singleton
 		if (debug == false)
 		{
-			UAC uctrl = new UAC(udata, Controller.getInstance()); // todo replace by singleton
+			UAC uctrl = new UAC(Controller.getInstance()); // todo replace by singleton
 			uctrl.initialize_view();
 		}
 		else

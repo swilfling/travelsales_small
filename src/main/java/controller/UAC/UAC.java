@@ -6,19 +6,21 @@ import javax.swing.JTextField;
 
 import controller.Controller;
 import model.UAC.User;
-import model.UAC.UserData;
 
 public class UAC {
 	protected Controller ctrl;
-	protected UserData udata;
 	LoginWindow login_view;
 	RegisterWindow register_view;
 	
-	public UAC(UserData udata, Controller ctrl)
+	public UAC(Controller ctrl)
 	{
-		this.udata = udata;
 		this.ctrl = ctrl;
-		this.udata.addUser("admin", "adminoad");
+		try {
+			User.addUserToDB("admin", "adminoad");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void initialize_view()
@@ -34,9 +36,9 @@ public class UAC {
 	 */
 	public void createUser(String uname, String pwd) throws Exception
 	{
-		if (!this.udata.in_udata(uname))
+		if (!User.in_db(uname))
 		{
-			this.udata.addUser(uname, pwd);
+			User.addUserToDB(uname, pwd);
 		}
 		else
 		{
@@ -46,7 +48,7 @@ public class UAC {
 	
 	public void checkLogin(String uname, String pwd) throws Exception
 	{
-		User user = this.udata.from_udata(uname, pwd);
+		User user = User.from_db(uname);
 		if (user != null)
 		{
 			login_view.closeWindow();
@@ -97,5 +99,6 @@ public class UAC {
 			login_view.updateInvalidLabel();
 		}
 	}
+
 }
 
