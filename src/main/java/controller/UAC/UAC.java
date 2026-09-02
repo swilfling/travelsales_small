@@ -51,11 +51,14 @@ public class UAC {
 		User user = User.from_db(uname);
 		if (user != null)
 		{
-			login_view.closeWindow();
-			this.ctrl.startGame(user);
+			if (user.getPwd().equals(pwd))
+			{
+				login_view.closeWindow();
+				this.ctrl.startGame(user);
+				return;
+			}
 		}
-		else
-			throw new Exception("Login invalid.");
+		throw new Exception("Login invalid.");
 	}
 	
 	public void openRegisterWindow()
