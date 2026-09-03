@@ -52,12 +52,12 @@ public class GamePanel extends JPanel {
 		for (GamePoint point : points)
 		{
 			g.setColor(Color.BLACK);
-			if(path.getStartPoint() != null)
-				if(point.getPoint_id() == path.getStartPoint().getPoint_id())
+			if(path.getStartPoint(ctrl.getPointData()) != null)
+				if(point.getPoint_id() == path.getStartPoint(ctrl.getPointData()).getPoint_id())
 					g.setColor(Color.red);
 				else if(path.getNumElements() > 0)
 				{	
-					if (point.getPoint_id() == path.getEndPoint().getPoint_id())
+					if (point.getPoint_id() == path.getEndPoint(ctrl.getPointData()).getPoint_id())
 						g.setColor(Color.blue);
 					else if (path.in_path(point))
 						g.setColor(Color.green);
@@ -71,7 +71,9 @@ public class GamePanel extends JPanel {
 	{
 		for (Connection c : connections)
 		{
-			if (path.in_path(c.getPoint1(), c.getPoint2()))
+			GamePoint p1 = ctrl.getPointData().getPointByID(c.getPoint1Id());
+			GamePoint p2 = ctrl.getPointData().getPointByID(c.getPoint2Id());
+			if (path.in_path(p1, p2))
 			{
 				g.setColor(Color.red);
 			}
@@ -79,7 +81,7 @@ public class GamePanel extends JPanel {
 			{
 				g.setColor(Color.black);
 			}
-			drawLine(g, c.getPoint1().toPoint(), c.getPoint2().toPoint());
+			drawLine(g, p1.toPoint(), p2.toPoint());
 		}
 	}
 	

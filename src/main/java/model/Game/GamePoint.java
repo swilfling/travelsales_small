@@ -22,6 +22,7 @@ public class GamePoint implements ISaveAndDelete{
 	@Column
 	protected double game_id;
 	@Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	protected int point_id;
 	
 	public GamePoint(int x, int y)

@@ -21,9 +21,10 @@ public class StateConnect extends GameState{
 		GamePoint p = data.getPointData().checkPointInRange(point);
 		if (p != null)
 		{
-			if (data.getConnectionData().isValid(data.getPath().getEndPoint(),p))
+			if (data.getConnectionData().isValid(data.getPath().getEndPoint(data.getPointData()),p))
 			{
-				data.getPath().addConnection(new Connection(data.getPath().getEndPoint(), p));
+				Connection c = new Connection(data.getPath().getEndPoint(data.getPointData()).getPoint_id(), p.getPoint_id());
+				data.getPath().addConnection(c);
 			}
 		}
 		window.repaint_panel();
@@ -32,10 +33,10 @@ public class StateConnect extends GameState{
 	@Override 
 	public boolean checkChangeState(Point point)
 	{
-		ArrayList<GamePoint> points = data.getPath().getPoints();
+		ArrayList<GamePoint> points = data.getPath().getPoints(data.getPointData());
 		if(data.getDataPoints().size() == points.size())
 		{
-			System.out.printf("Game finished with length %s", data.getPath().getLength());
+			System.out.printf("Game finished with length %s", data.getPath().getLength(data.getPointData()));
 			return true;
 		}
 		return false;

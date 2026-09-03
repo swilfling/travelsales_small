@@ -14,10 +14,18 @@ public class GameData {
 	{
 		this.pointData = PointData.from_db(game_id);
 		this.connectionData = new ConnectionData();
-		connectionData.addConnection(new Connection(pointData.getPointByID(0),pointData.getPointByID(1)));
-		connectionData.addConnection(new Connection(pointData.getPointByID(0),pointData.getPointByID(2)));
-		connectionData.addConnection(new Connection(pointData.getPointByID(0),pointData.getPointByID(3)));
-		connectionData.addConnection(new Connection(pointData.getPointByID(1),pointData.getPointByID(3)));
+		Connection c1 = new Connection(0,1);
+		c1.setGameId(0);
+		connectionData.addConnection(c1);
+		Connection c2 = new Connection(0,2);
+		c2.setGameId(0);
+		connectionData.addConnection(c2);
+		Connection c3 = new Connection(0,3);
+		c3.setGameId(0);
+		connectionData.addConnection(c3);
+		Connection c4 = new Connection(1,3);
+		c4.setGameId(0);
+		connectionData.addConnection(c4);
 		this.path = new Path();
 		
 	}

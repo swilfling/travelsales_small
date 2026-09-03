@@ -12,7 +12,6 @@ public class ConnectionData {
 	
 	public void addConnection(Connection c)
 	{
-		c.setConnectionID(connectionData.size());
 		connectionData.add(c);
 	}
 	
@@ -36,8 +35,8 @@ public class ConnectionData {
 	{
 		for (Connection c : connectionData)
 		{
-			int id1 = c.getPoint1().getPoint_id();
-			int id2 = c.getPoint2().getPoint_id();
+			int id1 = c.getPoint1Id();
+			int id2 = c.getPoint2Id();
 			if ((id1 == p1.getPoint_id() && id2 == p2.getPoint_id()) || (id1 == p2.getPoint_id() && id2 == p1.getPoint_id()))
 			{
 				return true;
@@ -55,5 +54,24 @@ public class ConnectionData {
 			}
 		}
 		return null;
+	}
+	public static ConnectionData from_db(int game_id)
+	{
+		ConnectionData p = new ConnectionData();
+		p.connectionData = (ArrayList<Connection>) Connection.select_from_db(game_id);
+		return p;
+	}
+	public void saveConnections()
+	{
+		for(Connection c : connectionData)
+		{
+			c.saveToDB();
+		}
+	}
+	public int size()
+	{
+		if (connectionData != null)
+			return connectionData.size();
+		return 0;
 	}
 }

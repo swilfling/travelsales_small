@@ -15,7 +15,7 @@ public class StateDone extends GameState {
 	@Override
 	public void handleState(Point point) {
 		// TODO Auto-generated method stub
-		System.out.printf("Game finished with length %s", data.getPath().getLength());
+		System.out.printf("Game finished with length %s", data.getPath().getLength(data.getPointData()));
 	}
 
 	@Override

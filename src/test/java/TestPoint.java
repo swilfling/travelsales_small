@@ -1,3 +1,5 @@
+import model.Game.Connection;
+import model.Game.ConnectionData;
 import model.Game.GamePoint;
 import model.Game.PointData;
 
@@ -28,9 +30,33 @@ public class TestPoint {
 			
 			pointData.savePoints();
 		}
-		PointData newPointData = PointData.from_db(game_id);
+		PointData pointData = PointData.from_db(game_id);
 		
-		assert(newPointData.size() == 4);
+		assert(pointData.size() == 4);
 		
+		Connection c = new Connection();
+		c.setPoint1Id(0);
+		c.setPoint2Id(1);
+		c.setGameId(0);
+		c.saveToDB();
+		
+		ConnectionData connectionData = ConnectionData.from_db(game_id);
+		if(connectionData.size() < 4)
+		{
+			Connection c2 = new Connection(0,2);
+			c2.setGameId(0);
+			connectionData.addConnection(c2);
+			Connection c3 = new Connection(0,3);
+			c3.setGameId(0);
+			connectionData.addConnection(c3);
+			Connection c4 = new Connection(1,3);
+			c4.setGameId(0);
+			connectionData.addConnection(c4);
+			
+			connectionData.saveConnections();
+		
+		}
+		ConnectionData newConnectionData = ConnectionData.from_db(game_id);
+		assert(newConnectionData.size() == 4);
 		}
 }

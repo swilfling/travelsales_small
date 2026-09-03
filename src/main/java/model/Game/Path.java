@@ -17,7 +17,7 @@ public class Path {
 		{
 			if (startpoint != null)
 			{
-				if (c.getPoint1().getPoint_id() == startpoint.getPoint_id())
+				if (c.getPoint1Id() == startpoint.getPoint_id())
 					connections.add(c);
 			}
 		}
@@ -28,22 +28,22 @@ public class Path {
 			
 	}
 	
-	public GamePoint getStartPoint()
+	public GamePoint getStartPoint(PointData data)
 	{
 		if (!connections.isEmpty())
 		{
-			return connections.getFirst().getPoint1();
+			return data.getPointByID(connections.getFirst().getPoint1Id());
 		}
 		if (startpoint != null)
 			return startpoint;
 		return null;
 	}
 	
-	public GamePoint getEndPoint()
+	public GamePoint getEndPoint(PointData data)
 	{
 		if (!connections.isEmpty())
 		{
-			return connections.getLast().getPoint2();
+			return data.getPointByID(connections.getLast().getPoint2Id());
 		}
 		return startpoint;
 	}
@@ -58,7 +58,7 @@ public class Path {
 		for(Connection c : connections)
 		{
 			int id = point.getPoint_id();
-			if (c.point1.point_id == id || c.point2.point_id == id)
+			if (c.getPoint1Id() == id || c.getPoint2Id() == id)
 				return true;
 		}
 		return false;
@@ -84,17 +84,19 @@ public class Path {
 		startpoint = p;
 	}
 	
-	public ArrayList<GamePoint> getPoints()
+	public ArrayList<GamePoint> getPoints(PointData data)
 	{
 		ArrayList<GamePoint> points = new ArrayList<GamePoint>();
 		points.add(startpoint);
 		for (Connection c: connections)
 		{
-			if(!checkInPointList(c.point1, points))
-				points.add(c.point1);
+			GamePoint point1 = data.getPointByID(c.getPoint1Id());
+			if(!checkInPointList(point1, points))
+				points.add(point1);
 			
-			if (!checkInPointList(c.point2, points))
-				points.add(c.point2);
+			GamePoint point2 = data.getPointByID(c.getPoint2Id());
+			if(!checkInPointList(point2, points))
+				points.add(point2);
 		}
 		return points;
 	}
@@ -110,12 +112,12 @@ public class Path {
 		return false;
 	}
 	
-	public double getLength()
+	public double getLength(PointData data)
 	{
 		double length = 0;
 		for (Connection c: connections)
 		{
-			length += c.getLength();
+			length += c.getLength(data);
 		}
 		return length;
 	}
