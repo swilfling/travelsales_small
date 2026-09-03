@@ -62,7 +62,7 @@ public class User implements ISaveAndDelete{
 			HibernateSupport.beginTransaction();
 			boolean noerr = HibernateSupport.commit(this);
 			HibernateSupport.commitTransaction();
-			return true;
+			return noerr;
 		}
 		else
 			return false;
