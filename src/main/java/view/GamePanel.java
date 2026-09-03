@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import controller.GameCtrl;
-import model.Connection;
-import model.GamePoint;
-import model.Path;
+import model.Game.Connection;
+import model.Game.GamePoint;
+import model.Game.Path;
 
 public class GamePanel extends JPanel {
 	protected GameCtrl ctrl;
@@ -39,7 +39,7 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		ArrayList<GamePoint> points = ctrl.getGameData().getDataPoints();
+		ArrayList<GamePoint> points = (ArrayList)ctrl.getGameData().getDataPoints();
 		ArrayList<Connection> connections = ctrl.getGameData().getConnections();
 		Path path = ctrl.getGameData().getPath();
 		drawConnections(connections, path, g);
@@ -79,7 +79,7 @@ public class GamePanel extends JPanel {
 			{
 				g.setColor(Color.black);
 			}
-			drawLine(g, c.getPoint1(), c.getPoint2());
+			drawLine(g, c.getPoint1().toPoint(), c.getPoint2().toPoint());
 		}
 	}
 	

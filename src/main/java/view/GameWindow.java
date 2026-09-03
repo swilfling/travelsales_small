@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import controller.GameCtrl;
-import model.GamePoint;
+import model.Game.GamePoint;
 
 public class GameWindow extends Window {
 	protected GamePanel panel;
