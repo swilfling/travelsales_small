@@ -2,7 +2,7 @@ package controller.State;
 
 import java.awt.Point;
 
-import model.GameData;
+import model.Game.GameData;
 import view.GameWindow;
 
 public class StateDone extends GameState {

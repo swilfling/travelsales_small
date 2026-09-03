@@ -1,10 +1,11 @@
-package model;
+package model.Game;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PointData {
-	protected ArrayList<GamePoint> pointData;
+	protected List<GamePoint> pointData;
 	
 	public PointData ()
 	{
@@ -27,7 +28,7 @@ public class PointData {
 		return null;
 	}
 	
-	public ArrayList<GamePoint>getPointData()
+	public List<GamePoint>getPointData()
 	{
 		return pointData;
 	}
@@ -42,4 +43,24 @@ public class PointData {
 		}
 		return null;
 	}
+	public static PointData from_db(int game_id)
+	{
+		PointData p = new PointData();
+		p.pointData = GamePoint.select_from_db(game_id);
+		return p;
+	}
+	public void savePoints()
+	{
+		for(GamePoint p : pointData)
+		{
+			p.saveToDB();
+		}
+	}
+	public int size()
+	{
+		if (pointData != null)
+			return pointData.size();
+		return 0;
+	}
+	
 }

@@ -8,11 +8,11 @@ import org.hibernate.cfg.Configuration;
 //import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.service.ServiceRegistry;
 
-import model.Connection;
-import model.ConnectionData;
-import model.GameData;
-import model.GamePoint;
-import model.PointData;
+import model.Game.Connection;
+import model.Game.ConnectionData;
+import model.Game.GameData;
+import model.Game.GamePoint;
+import model.Game.PointData;
 import model.UAC.User;
 
 

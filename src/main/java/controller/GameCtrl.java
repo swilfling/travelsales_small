@@ -7,12 +7,12 @@ import controller.State.GameState;
 import controller.State.StateConnect;
 import controller.State.StateDone;
 import controller.State.StateIdle;
-import model.Connection;
-import model.ConnectionData;
-import model.GameData;
-import model.GamePoint;
-import model.Path;
-import model.PointData;
+import model.Game.Connection;
+import model.Game.ConnectionData;
+import model.Game.GameData;
+import model.Game.GamePoint;
+import model.Game.Path;
+import model.Game.PointData;
 import view.GameWindow;
 
 public class GameCtrl {

@@ -18,9 +18,9 @@ import org.hibernate.sql.ast.tree.predicate.Predicate;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
-import model.Connection;
-import model.GameData;
-import model.GamePoint;
+import model.Game.Connection;
+import model.Game.GameData;
+import model.Game.GamePoint;
 import model.UAC.User;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -114,6 +114,13 @@ public class HibernateSupport {
 		query.setParameter(parameter_name, parameter_value);
 		return (List <T>)query.getResultList();
 	}
+	public static <T> List<T> execute_query(String name, String parameter_name, int parameter_value)
+	{
+		EntityManager em = sessionFactory.createEntityManager();
+		var query = em.createNamedQuery(name);
+		query.setParameter(parameter_name, parameter_value);
+		return (List <T>)query.getResultList();
+	}
 	
 	
 	@SuppressWarnings("unchecked")
@@ -124,6 +131,6 @@ public class HibernateSupport {
 	}
 	
 	public static <T> void deleteObject(T objectToDelete) {
-		sessionFactory.createEntityManager().remove(objectToDelete);
+		sessionFactory.getCurrentSession().remove(objectToDelete);
 	}
 }

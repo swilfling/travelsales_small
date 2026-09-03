@@ -3,9 +3,9 @@ package controller.State;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import model.Connection;
-import model.GameData;
-import model.GamePoint;
+import model.Game.Connection;
+import model.Game.GameData;
+import model.Game.GamePoint;
 import view.GameWindow;
 
 public class StateConnect extends GameState{

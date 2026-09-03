@@ -2,8 +2,8 @@ package controller.State;
 
 import java.awt.Point;
 
-import model.GameData;
-import model.GamePoint;
+import model.Game.GameData;
+import model.Game.GamePoint;
 import view.GameWindow;
 
 public class StateIdle extends GameState{

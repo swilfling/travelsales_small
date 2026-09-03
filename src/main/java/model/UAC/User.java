@@ -70,7 +70,9 @@ public class User implements ISaveAndDelete{
 
 	@Override
 	public void deleteFromDB() {
+		HibernateSupport.beginTransaction();
 		HibernateSupport.deleteObject(this);
+		HibernateSupport.commitTransaction();
 	}
 	
 	/**

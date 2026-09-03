@@ -1,20 +1,18 @@
-package model;
+package model.Game;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameData {
 
 	protected PointData pointData;
 	protected ConnectionData connectionData;
 	protected Path path;
+	protected int game_id = 0;
 	
 	public GameData()
 	{
-		this.pointData = new PointData();
-		pointData.addPoint(new GamePoint(50,50));
-		pointData.addPoint(new GamePoint(50, 100));
-		pointData.addPoint(new GamePoint(100, 100));
-		pointData.addPoint(new GamePoint(100, 50));
+		this.pointData = PointData.from_db(game_id);
 		this.connectionData = new ConnectionData();
 		connectionData.addConnection(new Connection(pointData.getPointByID(0),pointData.getPointByID(1)));
 		connectionData.addConnection(new Connection(pointData.getPointByID(0),pointData.getPointByID(2)));
@@ -23,7 +21,7 @@ public class GameData {
 		this.path = new Path();
 		
 	}
-	public ArrayList<GamePoint> getDataPoints() {
+	public List<GamePoint> getDataPoints() {
 		return pointData.getPointData();
 	}
 	public ArrayList<Connection> getConnections() {
