@@ -37,12 +37,15 @@ public class TestPoint {
 		Connection c = new Connection();
 		c.setPoint1Id(0);
 		c.setPoint2Id(1);
-		c.setGameId(0);
+		c.setGameId(1);
 		c.saveToDB();
 		
 		ConnectionData connectionData = ConnectionData.from_db(game_id);
 		if(connectionData.size() < 4)
 		{
+			Connection c1 = new Connection(0,1);
+			c1.setGameId(0);
+			connectionData.addConnection(c1);
 			Connection c2 = new Connection(0,2);
 			c2.setGameId(0);
 			connectionData.addConnection(c2);
